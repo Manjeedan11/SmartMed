@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             registerCard = new Panel();
+            register_header = new Label();
             label3 = new Label();
             btn_signUp = new CuoreUI.Controls.cuiButton();
             txt_phoneNumber = new CuoreUI.Controls.cuiTextBox();
@@ -40,12 +41,12 @@
             password_label = new Label();
             email_label = new Label();
             txt_email = new CuoreUI.Controls.cuiTextBox();
-            registerHeader = new Label();
             registerCard.SuspendLayout();
             SuspendLayout();
             // 
             // registerCard
             // 
+            registerCard.Controls.Add(register_header);
             registerCard.Controls.Add(label3);
             registerCard.Controls.Add(btn_signUp);
             registerCard.Controls.Add(txt_phoneNumber);
@@ -57,11 +58,21 @@
             registerCard.Controls.Add(password_label);
             registerCard.Controls.Add(email_label);
             registerCard.Controls.Add(txt_email);
-            registerCard.Controls.Add(registerHeader);
-            registerCard.Location = new Point(749, 151);
+            registerCard.Location = new Point(679, 148);
             registerCard.Name = "registerCard";
             registerCard.Size = new Size(536, 720);
             registerCard.TabIndex = 2;
+            // 
+            // register_header
+            // 
+            register_header.AutoSize = true;
+            register_header.Font = new Font("Segoe UI", 28.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            register_header.ForeColor = SystemColors.ButtonHighlight;
+            register_header.Location = new Point(163, 40);
+            register_header.Name = "register_header";
+            register_header.Size = new Size(207, 62);
+            register_header.TabIndex = 14;
+            register_header.Text = "Register";
             // 
             // label3
             // 
@@ -110,6 +121,7 @@
             btn_signUp.TextAlignment = StringAlignment.Center;
             btn_signUp.TextPadding = 12;
             btn_signUp.TextSpacing = 2;
+            btn_signUp.Click += btn_signUp_Click;
             // 
             // txt_phoneNumber
             // 
@@ -295,17 +307,6 @@
             txt_email.TextOffset = new Size(0, 0);
             txt_email.UnderlinedStyle = true;
             // 
-            // registerHeader
-            // 
-            registerHeader.AutoSize = true;
-            registerHeader.Font = new Font("Segoe UI", 28.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            registerHeader.ForeColor = SystemColors.ButtonHighlight;
-            registerHeader.Location = new Point(171, 30);
-            registerHeader.Name = "registerHeader";
-            registerHeader.Size = new Size(207, 62);
-            registerHeader.TabIndex = 0;
-            registerHeader.Text = "Register";
-            // 
             // RegisterForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -327,12 +328,12 @@
         private CuoreUI.Controls.cuiButton btn_signUp;
         private Label email_label;
         private CuoreUI.Controls.cuiTextBox txt_email;
-        private Label registerHeader;
         private Label label3;
         private CuoreUI.Controls.cuiTextBox txt_phoneNumber;
         private CuoreUI.Controls.cuiTextBox txt_password;
         private Label label1;
         private Label label2;
         private CuoreUI.Controls.cuiTextBox txt_address;
+        private Label register_header;
     }
 }
