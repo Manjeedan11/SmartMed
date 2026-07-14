@@ -32,58 +32,25 @@ namespace SmartMed.Business
             return user;
         }
 
-        public bool Register(string email, string password, string fullName, string phone, string address)
+        public bool Register(User user, Customer customer)
         {
-          
-            if (string.IsNullOrWhiteSpace(email))
-                throw new Exception("Email is required.");
-            if (string.IsNullOrWhiteSpace(password))
-                throw new Exception("Password is required.");
-            if (password.Length < 6)
-                throw new Exception("Password must be at least 6 characters.");
-            if (string.IsNullOrWhiteSpace(fullName))
-                throw new Exception("Full name is required.");
-            if (string.IsNullOrWhiteSpace(phone))
-                throw new Exception("Phone number is required.");
-            if (string.IsNullOrWhiteSpace(address))
-                throw new Exception("Address is required.");
+           
+            user.Validate();
+            customer.Validate();
 
-     
-            if (userRepo.EmailExists(email))
+            if (userRepo.EmailExists(user.email))
                 throw new Exception("Email already registered.");
 
-           
-            string hashedPassword = PasswordHelper.HashPassword(password);
-
-           
-            User newUser = new User
-            {
-                email = email,
-                passwordHash = hashedPassword,
-                role = "Customer",       
-                createdAt = DateTime.Now
-            };
-
-           
-            int userId = userRepo.CreateUser(newUser);
-
-         
-            Customer customer = new Customer
-            {
-                userId = userId,        
-                fullName = fullName,
-                phoneNumber = phone,
-                address = address
-            };
-
             
-            bool result = customerRepo.CreateCustomer(customer);
+            int userId = userRepo.CreateUser(user);
+       
+            customer.SetUserId(userId);
 
-          
+            bool result = customerRepo.CreateCustomer(customer);
             return result;
         }
 
-        
+
         public Customer LoginAsCustomer(string email, string password)
         {
           

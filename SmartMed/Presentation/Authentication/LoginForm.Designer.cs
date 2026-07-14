@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             loginCard = new Panel();
+            lnkRegister = new LinkLabel();
+            lb_signUp = new Label();
             txt_email = new CuoreUI.Controls.cuiTextBox();
             password_label = new Label();
             btn_login = new CuoreUI.Controls.cuiButton();
@@ -40,6 +42,8 @@
             // 
             // loginCard
             // 
+            loginCard.Controls.Add(lnkRegister);
+            loginCard.Controls.Add(lb_signUp);
             loginCard.Controls.Add(txt_email);
             loginCard.Controls.Add(password_label);
             loginCard.Controls.Add(btn_login);
@@ -50,6 +54,26 @@
             loginCard.Name = "loginCard";
             loginCard.Size = new Size(536, 481);
             loginCard.TabIndex = 1;
+            // 
+            // lnkRegister
+            // 
+            lnkRegister.AutoSize = true;
+            lnkRegister.Location = new Point(334, 423);
+            lnkRegister.Name = "lnkRegister";
+            lnkRegister.Size = new Size(94, 20);
+            lnkRegister.TabIndex = 9;
+            lnkRegister.TabStop = true;
+            lnkRegister.Text = "Sign Up here";
+            lnkRegister.LinkClicked += lnkRegister_LinkClicked;
+            // 
+            // lb_signUp
+            // 
+            lb_signUp.AutoSize = true;
+            lb_signUp.Location = new Point(116, 423);
+            lb_signUp.Name = "lb_signUp";
+            lb_signUp.Size = new Size(224, 20);
+            lb_signUp.TabIndex = 8;
+            lb_signUp.Text = "Don't have a customer account ?";
             // 
             // txt_email
             // 
@@ -108,7 +132,7 @@
             btn_login.HoverOutline = Color.FromArgb(32, 128, 128, 128);
             btn_login.Image = null;
             btn_login.ImageExpand = new Point(0, 0);
-            btn_login.Location = new Point(213, 363);
+            btn_login.Location = new Point(211, 348);
             btn_login.Name = "btn_login";
             btn_login.NormalBackground = Color.White;
             btn_login.NormalForeColor = Color.Black;
@@ -201,5 +225,7 @@
         private Label email_label;
         private Label password_label;
         private CuoreUI.Controls.cuiTextBox txt_email;
+        private LinkLabel lnkRegister;
+        private Label lb_signUp;
     }
 }

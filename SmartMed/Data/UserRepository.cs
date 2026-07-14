@@ -22,21 +22,21 @@ namespace SmartMed.Data
                 {
                     if (reader.Read())
                     {
-                        user = new User
-                        {
-                            userId = (int)reader["UserID"],
-                            email = reader["Email"].ToString(),
-                            passwordHash = reader["PasswordHash"].ToString(),
-                            role = reader["Role"].ToString(),
-                            createdAt = (DateTime)reader["CreatedAt"]
-                        };
+                        // ✅ Use the full constructor
+                        user = new User(
+                            (int)reader["UserID"],
+                            reader["Email"].ToString(),
+                            reader["PasswordHash"].ToString(),
+                            reader["Role"].ToString(),
+                            (DateTime)reader["CreatedAt"]
+                        );
                     }
                 }
             }
             return user;
         }
 
-        
+
         public bool EmailExists(string email)
         {
             using (SqlConnection conn = db.GetConnection())
@@ -49,21 +49,25 @@ namespace SmartMed.Data
             }
         }
 
-        
+
         public int CreateUser(User user)
         {
             using (SqlConnection conn = db.GetConnection())
             {
-                string query = @"INSERT INTO [User] (Email, PasswordHash, Role, CreatedAt) 
-                                 VALUES (@Email, @PasswordHash, @Role, @CreatedAt);
-                                 SELECT SCOPE_IDENTITY();";
+                string query = @"
+            INSERT INTO [User] (Email, PasswordHash, Role, CreatedAt)
+            VALUES (@Email, @PasswordHash, @Role, @CreatedAt);
+            SELECT SCOPE_IDENTITY();";
+
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@Email", user.email);
                 cmd.Parameters.AddWithValue("@PasswordHash", user.passwordHash);
                 cmd.Parameters.AddWithValue("@Role", user.role);
                 cmd.Parameters.AddWithValue("@CreatedAt", DateTime.Now);
                 conn.Open();
-                return Convert.ToInt32(cmd.ExecuteScalar());
+                int id = Convert.ToInt32(cmd.ExecuteScalar());
+                user.SetId(id); // ✅ Set the ID after insertion
+                return id;
             }
         }
     }

@@ -1,4 +1,6 @@
 ﻿using SmartMed.Business;
+using SmartMed.Models;
+using SmartMed.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,79 +26,51 @@ namespace SmartMed.Presentation.Authentication
 
         private void btn_signUp_Click(object sender, EventArgs e)
         {
-            // Get user input
-            string fullName = txt_fullName.Text.Trim();
-            string email = txt_email.Text.Trim();
-            string password = txt_password.Text;
-            string address = txt_address.Text.Trim();
-            string phone = txt_phoneNumber.Text.Trim();
-
-            // ----- UI VALIDATION -----
-            if (string.IsNullOrWhiteSpace(fullName))
-            {
-                MessageBox.Show("Please enter your full name.", "Validation Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txt_fullName.Focus();
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(email))
-            {
-                MessageBox.Show("Please enter your email address.", "Validation Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txt_email.Focus();
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(password))
-            {
-                MessageBox.Show("Please enter a password.", "Validation Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txt_password.Focus();
-                return;
-            }
-
-            if (password.Length < 6)
-            {
-                MessageBox.Show("Password must be at least 6 characters.", "Validation Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txt_password.Focus();
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(address))
-            {
-                MessageBox.Show("Please enter your address.", "Validation Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txt_address.Focus();
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(phone))
-            {
-                MessageBox.Show("Please enter your phone number.", "Validation Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txt_phoneNumber.Focus();
-                return;
-            }
-
             try
             {
-                // ----- CALL BUSINESS LAYER -----
-                // AuthenticationService.Register(email, password, fullName, phone, address)
-                bool success = auth.Register(email, password, fullName, phone, address);
+                string fullName = txt_fullName.Text.Trim();
+                string email = txt_email.Text.Trim();
+                string password = txt_password.Text;
+                string address = txt_address.Text.Trim();
+                string phone = txt_phoneNumber.Text.Trim();
 
+                
+                string hashedPassword = PasswordHelper.HashPassword(password);
+
+                
+                User user = new User(email, hashedPassword, "Customer");
+                Customer customer = new Customer(fullName, phone, address);
+
+                
+                user.Validate();
+                customer.Validate();
+
+                bool success = auth.Register(user, customer);
                 if (success)
                 {
-                    MessageBox.Show("Registration successful! You can now login.",
-                        "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    this.Close(); // Close registration form
+                    MessageBox.Show("Registration successful!", "Success",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.Close();
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Registration Failed",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void SetFocusOnField(string paramName)
+        {
+            if (string.IsNullOrEmpty(paramName)) return;
+            switch (paramName)
+            {
+                case nameof(User.email): txt_email.Focus(); break;
+                case nameof(User.passwordHash): txt_password.Focus(); break;
+                case nameof(Customer.fullName): txt_fullName.Focus(); break;
+                case nameof(Customer.phoneNumber): txt_phoneNumber.Focus(); break;
+                case nameof(Customer.address): txt_address.Focus(); break;
+                default: break;
             }
         }
     }

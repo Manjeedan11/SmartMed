@@ -1,6 +1,7 @@
 ﻿using SmartMed.Business;
 using SmartMed.Data;
 using SmartMed.Models;
+using SmartMed.Presentation.Dashboard;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,7 +17,8 @@ namespace SmartMed.Presentation.Authentication
     {
 
         private AuthenticationService auth = new AuthenticationService();
-        
+        private CustomerRepository customerRepository = new CustomerRepository();
+
         public LoginForm()
         {
             InitializeComponent();
@@ -25,15 +27,16 @@ namespace SmartMed.Presentation.Authentication
             loginCard.BackColor = ColorTranslator.FromHtml("#27453F");
             btn_login.HoverBackground = ColorTranslator.FromHtml("#DDF084");
             btn_login.HoverForeColor = ColorTranslator.FromHtml("#102E30");
+            lb_signUp.ForeColor = ColorTranslator.FromHtml("#DDF084");
         }
 
         private void btn_login_Click(object sender, EventArgs e)
         {
-          
+
             string email = txt_email.Text.Trim();
             string password = txt_password.Text;
 
-            
+
             if (string.IsNullOrWhiteSpace(email))
             {
                 MessageBox.Show("Please enter your email.", "Validation Error",
@@ -52,43 +55,48 @@ namespace SmartMed.Presentation.Authentication
 
             try
             {
+     
                 User user = auth.Login(email, password);
 
-                MessageBox.Show($"Welcome, {user.email}!\nRole: {user.role}",
-                    "Login Successful",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-
-              
+                
                 if (user.role == "Admin")
                 {
-                   
-                    MessageBox.Show("Admin Dashboard would open here.", "Info",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
-                 
+                    AdminDashboardForm adminDashboard = new AdminDashboardForm(user);
+                    adminDashboard.Show();
+                    this.Hide();
                 }
                 else if (user.role == "Customer")
                 {
+                  
+                    Customer customer = customerRepository.GetCustomerByUserId(user.userId);
+                    if (customer == null)
+                    {
+                        MessageBox.Show("Customer profile not found.", "Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
 
-                    MessageBox.Show("Customer Dashboard would open here.", "Info",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    CustomerDashboardForm customerDashboard = new CustomerDashboardForm(user, customer);
+                    customerDashboard.Show();
+                    this.Hide();
                 }
                 else
                 {
                     MessageBox.Show("Unknown user role.", "Error",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
                 }
-
-                this.Hide();
             }
             catch (Exception ex)
             {
-             
                 MessageBox.Show(ex.Message, "Login Failed",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
+        private void lnkRegister_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            RegisterForm registerForm = new RegisterForm();
+            registerForm.ShowDialog();
+        }
     }
 }

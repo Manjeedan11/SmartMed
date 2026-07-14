@@ -28,12 +28,48 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "MyOrdersForm";
+            lb_myOrder = new Label();
+            dgv_myOrder = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)dgv_myOrder).BeginInit();
+            SuspendLayout();
+            // 
+            // lb_myOrder
+            // 
+            lb_myOrder.AutoSize = true;
+            lb_myOrder.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lb_myOrder.Location = new Point(48, 153);
+            lb_myOrder.Name = "lb_myOrder";
+            lb_myOrder.Size = new Size(153, 41);
+            lb_myOrder.TabIndex = 2;
+            lb_myOrder.Text = "My Order";
+            // 
+            // dgv_myOrder
+            // 
+            dgv_myOrder.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgv_myOrder.Location = new Point(61, 234);
+            dgv_myOrder.Name = "dgv_myOrder";
+            dgv_myOrder.RowHeadersWidth = 51;
+            dgv_myOrder.Size = new Size(1312, 288);
+            dgv_myOrder.TabIndex = 3;
+            dgv_myOrder.CellContentClick += dgv_myOrder_CellContentClick;
+            // 
+            // MyOrdersForm
+            // 
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1902, 1033);
+            Controls.Add(dgv_myOrder);
+            Controls.Add(lb_myOrder);
+            Name = "MyOrdersForm";
+            Text = "MyOrdersForm";
+            ((System.ComponentModel.ISupportInitialize)dgv_myOrder).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
+
+        private Label lb_myOrder;
+        private DataGridView dgv_myOrder;
     }
 }

@@ -1,7 +1,7 @@
 /*CREATE DATABASE SmartMed;*/
 USE SmartMed;
 
-CREATE TABLE [User] (
+/*CREATE TABLE [User] (
     UserID INT IDENTITY(1,1) PRIMARY KEY,
     Email NVARCHAR(255) NOT NULL UNIQUE,
     PasswordHash NVARCHAR(255) NOT NULL,
@@ -124,8 +124,12 @@ INSERT INTO Medicine (Name, CategoryID, SupplierID, Dosage, Price, Stock, Expiry
 ('Amoxicillin 500mg Capsules', 
     (SELECT CategoryID FROM Category WHERE CategoryName = 'Antibiotics'), 
     (SELECT SupplierID FROM Supplier WHERE SupplierName = 'Ceylon Pharma (Pvt) Ltd'),
-    '500mg capsule', 350.00, 200, '2026-09-15', 1, NULL)
+    '500mg capsule', 350.00, 200, '2026-09-15', 1, NULL)*/
 
 
-
+/*SELECT * FROM [User];*/
 SELECT * FROM Category;
+
+/*DELETE FROM Medicine WHERE Name = 'Aspirin 75mg Tablets';*/
+
+
